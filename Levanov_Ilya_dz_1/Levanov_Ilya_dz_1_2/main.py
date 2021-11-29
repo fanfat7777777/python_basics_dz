@@ -1,6 +1,6 @@
 first_list = []
 
-for i in range(0, 1001):
+for i in range(1, 1001):
     if i % 2 != 0:
         number = i**3
         first_list.append(number)
