@@ -22,5 +22,24 @@ while i < len(my_list):
 
 print(my_list)
 
+#Модификация строки
 str_list = " ".join(my_list)
 print(str_list)
+new_str = ''
+n = 0
+i = 0
+while i < len(str_list):
+    s_sign = str_list[i:i+3]
+    if s_sign == ' " ':
+        n += 1
+        if n % 2 != 0:
+            s_sign = s_sign.replace(' " ', ' "')
+            new_str += s_sign
+        if n % 2 == 0:
+            s_sign = s_sign.replace(' " ', '" ')
+            new_str += s_sign
+        i += 3
+    else:
+        new_str += str_list[i]
+        i += 1
+print(new_str)
