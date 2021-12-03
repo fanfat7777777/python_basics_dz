@@ -1,28 +1,43 @@
-first_list = []
+# first_list = []
+#
+# for i in range(1, 1001, 2):
+#     first_list.append(i ** 3)
+#
+# print(first_list)
+#
+#
+# def sum_num(additional_number):
+#     sum_number_list = 0
+#     for num in first_list:
+#         number = num + additional_number
+#         sum_number = 0
+#         while number != 0:
+#             sum_number += number % 10
+#             number //= 10
+#
+#         if sum_number % 7 == 0:
+#             sum_number_list += num
+#     print('a)', sum_number_list)
+#
+# sum_num(0)
+# sum_num(17)
 
-for i in range(1, 1001):
-    if i % 2 != 0:
-        number = i**3
-        first_list.append(number)
+#упрощение после просмотра выполненных ДЗ
 
-print(first_list)
+#То к чему стоит стремиться:
+def sum_numbers(value):
+    result = 0
 
+    while value != 0:
+        result += value % 10
+        value //= 10
 
-def sum_num(additional_number):
-    sum_number_list = 0
-    i = 0
-    while i < len(first_list):
-        number = first_list[i] + additional_number
-        sum_number = 0
-        while number != 0:
-            sum_number += number % 10
-            number //= 10
+    return result
 
-        if sum_number % 7 == 0:
-            sum_number_list += first_list[i]
-        i += 1
+cub_my = [i**3 for i in range(1, 1001, 2)]
 
-    print('a)', sum_number_list)
+result_a = sum(filter(lambda num: sum_numbers(num) % 7 == 0, cub_my))
+result_b = sum(filter(lambda num: sum_numbers(num + 17) % 7 == 0, cub_my))
 
-sum_num(0)
-sum_num(17)
+print(result_a)
+print(result_b)
