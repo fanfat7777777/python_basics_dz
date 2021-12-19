@@ -1,36 +1,48 @@
 import os
 
-dir_project = {}
-my_way = os.getcwd()
+
+def create():
+    with open('config.yaml', 'r') as conf:
+        line = conf.readlines()
+        # Перебираем по строкам
+        for i in range(1, len(line) - 1):
+
+            l_old = line[i].replace('|--', '').replace('|', ' ').replace('\n', '')
+            l_new = line[i + 1].replace('|--', '').replace('|', ' ').replace('\n', '') \
+                if i < len(line) else None
+
+            id_old = l_old.count(' ') // 3
+            id_new = l_new.count(' ') // 3
+
+            if id_old > id_new:
+                # Цикл возврата к нужной папке
+                for way_ret in range(id_old - id_new):
+                    os.chdir('..')
+
+            if id_old < id_new:
+                # Сначала заходим в директорию
+                if not os.path.isdir(l_old.strip()):
+                    os.mkdir(l_old.strip())
+                    os.chdir(os.getcwd() + rf'\{l_old.strip()}')
+                else:
+                    os.chdir(os.getcwd() + rf'\{l_old.strip()}')
+                # Создаём папку или пропускаем
+                if not l_new.count('.'):
+                    if not os.path.isdir(l_new.strip()):
+                        os.mkdir(l_new.strip())
+                # Создаём или перезаписываем файл
+                else:
+                    with open(l_new.strip(), 'w'):
+                        pass
+
+            elif id_old == id_new:
+                # Папка
+                if not os.path.isdir(l_new.strip()) and not l_new.count('.'):
+                    os.mkdir(l_new.strip())
+                # Файл
+                else:
+                    with open(l_new.strip(), 'w'):
+                        pass
 
 
-def secyr(way, key_way, name):
-    # Если файла нет, то создаём его
-    if not os.path.exists(name):
-        os.mkdir(name)
-    # Если это ключевая директория, то переходим в неё
-    os.chdir(way + rf'\{name}') if key_way else None
-
-
-with open('config.yaml', 'r') as conf:
-    line = conf.readlines()
-    # Перебираем по строкам
-    for i in range(1, len(line)):
-        l_new = line[i].strip().replace('|--', '').replace('|', '')         # Наша текущая строка
-        l_old = line[i - 1].strip().replace('|--', '').replace('|', '')     # Предыдущая строка
-
-        if not l_new.count(' '):        # Если каталог находится в корне проекта
-            os.chdir(my_way)            # Возвращаемся в корень
-            secyr(my_way, 1, l_new.strip())
-        else:
-            # Если пробелы есть
-            # Проверяем является ли это именем файла
-            if l_new.count('.'):
-                with open(f'{l_new.strip()}', 'w'):
-                    pass
-            else:
-                # Если это директория
-                if l_new.count(' ') > l_old.count(' '):  # Новый подкаталог (Ключевой путь)
-                    secyr(os.getcwd(), 1, l_new.strip())
-                elif l_new.count(' ') == l_old.count(' '):  # Папка в каталоге
-                    secyr(os.getcwd(), 0, l_new.strip())
+create()
