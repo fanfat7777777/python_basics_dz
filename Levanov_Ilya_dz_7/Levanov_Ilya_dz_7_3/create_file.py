@@ -41,8 +41,10 @@ def create():
                     os.mkdir(l_new.strip())
                 # Файл
                 else:
-                    with open(l_new.strip(), 'w'):
-                        pass
+                    if not os.path.isdir(l_new.strip()):
+                        with open(l_new.strip(), 'w'):
+                            pass
+    print('Файлы созданы')
 
 
 if __name__ == '__main__':
